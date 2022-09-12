@@ -11,8 +11,28 @@ mongoose.connect(url)
 
 
 const phonebookSchema = new mongoose.Schema({
-  name : String,
-  number : Number,
+  name : { 
+    type: String,
+    minLength :3,
+    required : true,
+  },
+  number : {
+    type: String,
+    minLength:8,
+    required:true,
+    validate: {
+      validator: function(v) {
+        if(/^\d{2}-\d{6,}$/.test(v) ||
+          /^\d{3}-\d{5,}$/.test(v) ||
+          /^\d{8,}$/.test(v)){
+          return true;
+        } else {
+          return false;
+        }
+      },
+    }
+  }
+
 })
 
 phonebookSchema.set('toJSON', {
